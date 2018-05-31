@@ -1,14 +1,16 @@
 [SCRIPT]
-data_dir = 'data'
-normalized_dir = 'data/normalized'
-finished_dir = 'data/normalized/finished'
-target_table = 'my_table'
+mysqlimport_cmd = /opt/local/bin/mysqlimport
+mysqlimport_table = data_import
+mysqlimport_database = py_mysql
+
+[FILEHANDLER]
+data_dir = data
+normalized_dir = data/normalized
+finished_dir = data/normalized/finished
 
 [MYSQLIMPORT]
-cmd = 'mysqlimport'
 host = 'localhost'
 port = 3306
-user = 'user'
-password = 'pass'
-db_name = my_database
-columns = ''
+user = 'py_mysql'
+password = 'py_mysql'
+columns = 'id, item_name, item_cost, qty, total'
