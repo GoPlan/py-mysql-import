@@ -7,6 +7,11 @@ RUN = 'mysqlimport'
 
 class MySqlImportWrapper:
 
+    def __call__(self, config):
+        importer = MySqlImportWrapper(config)
+        status = importer.run()
+        return status
+
     def __init__(self, cnf):
         self._cmd = cnf['cmd'] or RUN
         self._host = cnf['host'] or HOST
@@ -16,18 +21,14 @@ class MySqlImportWrapper:
         self._columns = cnf['columns']
 
     def run(self):
-        
+
         cmd = [
             self._cmd,
             '--local'
         ]
 
         return subprocess.run(cmd)
-        
+
     @staticmethod
     def validate_config(config):
         print('validating config ...')
-
-    def __call__(self, config):
-        importer = MySqlImportWrapper(config)
-        importer.run()

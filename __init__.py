@@ -1,1 +1,1 @@
-from mysqlimport import MyImport
+from . import mysqlimport_wrapper 
