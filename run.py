@@ -1,18 +1,34 @@
 import argparse
+import configparser
 
-parser = argparse.ArgumentParser(description='A MySQL csv import tool')
+from mysqlimport_wrapper import MySqlImportWrapper
 
-parser.add_argument('-c', '--command',
-                    default='mysqlimport',
-                    help='mysqlimport command')
+ARG_DATA = "data"
+ARG_FINISHED = "data/finished"
+ARG_CONFIG = "import.cnf"
 
-parser.add_argument('-d', '--data',
-                    default='data',
-                    help='Directory containing CSV data files')
+CNF_MYSQLIMPORT = "MYSQLIMPORT"
 
-parser.add_argument('-f', '--finished',
-                    default='data/finished',
-                    help='Directory for finished CSV files')
+arg_parser = argparse.ArgumentParser(description='A MySQL csv import tool')
 
-args = parser.parse_args()
-print(vars(args))
+arg_parser.add_argument('-c', '--config',
+                        default=ARG_CONFIG,
+                        help='Configuration file')
+
+arg_parser.add_argument('-d', '--data',
+                        default=ARG_DATA,
+                        help='Directory containing CSV data files')
+
+arg_parser.add_argument('-f', '--finished',
+                        default=ARG_FINISHED,
+                        help='Directory for finished CSV files')
+
+arg = arg_parser.parse_args()
+arg = vars(arg)
+
+cnf_parser = configparser.ConfigParser()
+cnf_parser.read(arg['config'])
+cnf_mysqlimport = cnf_parser[CNF_MYSQLIMPORT]
+
+MySqlImportWrapper.validate_config(cnf_mysqlimport)
+MySqlImportWrapper(cnf_mysqlimport)
