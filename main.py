@@ -34,9 +34,16 @@ def run():
     cnf_mysqlimport = cnf_parser[CNF_MYSQLIMPORT]
 
     command = MySqlImportCommand(
-        cnf_script[SCRIPT_CMD], cnf_script[SCRIPT_CACHE_DIR], cnf_script[SCRIPT_DB_DBNAME], cnf_script[SCRIPT_DB_TABLE], cnf_mysqlimport)
+        cnf_script[SCRIPT_CMD], 
+        cnf_script[SCRIPT_CACHE_DIR], 
+        cnf_script[SCRIPT_DB_DBNAME], 
+        cnf_script[SCRIPT_DB_TABLE], 
+        cnf_mysqlimport)
+
     filebench = FileBench(
-        cnf_script[SCRIPT_DATA_DIR], cnf_script[SCRIPT_FINISHED_DIR])
+        cnf_script[SCRIPT_DATA_DIR], 
+        cnf_script[SCRIPT_FINISHED_DIR])
+
     iterator = iter(filebench.get_unprocessed_files())
 
     for file in iterator:
