@@ -4,9 +4,6 @@ import pathlib
 import filecmp
 import shutil
 
-from command import Command
-
-
 class File():
 
     def __init__(self, filename, current_dir, data_dir, finished_dir):
@@ -16,12 +13,12 @@ class File():
         self._finished_dir = finished_dir
 
     @property
-    def filepath(self):
-        return pathlib.PurePath(os.getcwd(), self._current_dir, self._filename)
+    def filename(self):
+        return self._filename
 
     @property
-    def fullpath(self):
-        return pathlib.PurePath(self.filepath, self._filename)
+    def filepath(self):
+        return str(pathlib.PurePath(os.getcwd(), self._current_dir, self._filename))
 
     def finish(self):
         finished = pathlib.PurePath(
