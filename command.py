@@ -33,4 +33,4 @@ class MySqlImportCommand():
 
         p = subprocess.run(cmd)
 
-        return p
+        return p.returncode

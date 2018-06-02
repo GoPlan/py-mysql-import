@@ -1,4 +1,3 @@
-
 import os
 import pathlib
 import filecmp
@@ -26,7 +25,9 @@ class File():
         os.open(finished, os.O_CREAT|os.O_TRUNC)
 
     def process(self, command):
-        command.run(self)
+        returncode = command.run(self)
+        if __debug__:
+            if not returncode == 0: raise AssertionError        
         self.finish()
 
 
