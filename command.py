@@ -16,13 +16,16 @@ class MySqlImportCommand():
     def run(self, file):
 
         tmp_filename = '%s.%s' % (self._table, file.filename)
-        tmp_filepath = str(pathlib.PurePath(os.getcwd(), self._cache_dir, tmp_filename))
+        tmp_filepath = str(pathlib.PurePath(os.getcwd(),
+                                            self._cache_dir,
+                                            tmp_filename))
+
         shutil.copy(file.filepath, tmp_filepath)
 
         cmd = [
             self._cmd,
-           '--local',
-           '--replace'
+            '--local',
+            '--replace'
         ]
 
         for item in self._config:

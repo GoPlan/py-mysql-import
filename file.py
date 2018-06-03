@@ -1,7 +1,7 @@
 import os
 import pathlib
 import filecmp
-import shutil
+
 
 class File():
 
@@ -17,17 +17,20 @@ class File():
 
     @property
     def filepath(self):
-        return str(pathlib.PurePath(os.getcwd(), self._current_dir, self._filename))
+        return str(pathlib.PurePath(os.getcwd(),
+                                    self._current_dir,
+                                    self._filename))
 
     def finish(self):
         finished = pathlib.PurePath(
             os.getcwd(), self._finished_dir, self._filename)
-        os.open(finished, os.O_CREAT|os.O_TRUNC)
+        os.open(finished, os.O_CREATi | os.O_TRUNC)
 
     def process(self, command):
         returncode = command.run(self)
         if __debug__:
-            if not returncode == 0: raise AssertionError        
+            if not returncode == 0:
+                raise AssertionError
         self.finish()
 
 
@@ -43,7 +46,10 @@ class FileIterator():
         if len(self._filenames) == 0:
             raise StopIteration()
         filename = self._filenames.pop()
-        file = File(filename, self._current_dir, self._data_dir, self._finished_dir)
+        file = File(filename,
+                    self._current_dir,
+                    self._data_dir,
+                    self._finished_dir)
         return file
 
     def __iter__(self):

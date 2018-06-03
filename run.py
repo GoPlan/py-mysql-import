@@ -3,8 +3,9 @@ from .file import FileBench
 
 import configparser
 
-class MySqlBatchImport():
-    
+
+class App():
+
     DEFAULT_CONFIG_FILE = "import.cnf"
 
     SCRIPT_CMD = "cmd"
@@ -18,24 +19,24 @@ class MySqlBatchImport():
     CNF_MYSQLIMPORT = "MYSQLIMPORT"
 
     @staticmethod
-    def run(cnf_file = DEFAULT_CONFIG_FILE):
+    def run(cnf_file=DEFAULT_CONFIG_FILE):
 
         cnf_parser = configparser.ConfigParser()
         cnf_parser.read(cnf_file)
 
-        cnf_script = cnf_parser[MySqlBatchImport.CNF_SCRIPT]
-        cnf_mysqlimport = cnf_parser[MySqlBatchImport.CNF_MYSQLIMPORT]
+        cnf_script = cnf_parser[App.CNF_SCRIPT]
+        cnf_mysqlimport = cnf_parser[App.CNF_MYSQLIMPORT]
 
         command = MySqlImportCommand(
-            cnf_script[MySqlBatchImport.SCRIPT_CMD],
-            cnf_script[MySqlBatchImport.SCRIPT_CACHE_DIR],
-            cnf_script[MySqlBatchImport.SCRIPT_DB_DBNAME],
-            cnf_script[MySqlBatchImport.SCRIPT_DB_TABLE],
+            cnf_script[App.SCRIPT_CMD],
+            cnf_script[App.SCRIPT_CACHE_DIR],
+            cnf_script[App.SCRIPT_DB_DBNAME],
+            cnf_script[App.SCRIPT_DB_TABLE],
             cnf_mysqlimport)
 
         filebench = FileBench(
-            cnf_script[MySqlBatchImport.SCRIPT_DATA_DIR],
-            cnf_script[MySqlBatchImport.SCRIPT_FINISHED_DIR])
+            cnf_script[App.SCRIPT_DATA_DIR],
+            cnf_script[App.SCRIPT_FINISHED_DIR])
 
         iterator = iter(filebench.get_unprocessed_files())
 
