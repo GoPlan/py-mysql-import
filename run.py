@@ -2,11 +2,18 @@ from .command import MySqlImportCommand
 from .file import FileBench
 
 import configparser
+import os
+import inspect
+import pathlib
+import shutil
 
 
 class App():
 
     DEFAULT_CONFIG_FILE = "import.cnf"
+    DEFAULT_DATA_DIR = "data"
+    DEFAULT_CACHED_DIR = "cached"
+    DEFAULT_FINISHED_DIR = "finished"
 
     SCRIPT_CMD = "cmd"
     SCRIPT_DB_TABLE = "db_table"
@@ -42,3 +49,17 @@ class App():
 
         for file in iterator:
             file.process(command)
+
+    @staticmethod
+    def prepare():
+        os.mkdir(App.DEFAULT_DATA_DIR)
+        os.mkdir(App.DEFAULT_CACHED_DIR)
+        os.mkdir(App.DEFAULT_FINISHED_DIR)
+
+        module = inspect.getfile(App)
+        module_path = os.path.dirname(module)
+
+        import_cnf = pathlib.PurePath(module_path,
+                                      App.DEFAULT_CONFIG_FILE)
+
+        shutil.copy(import_cnf, App.DEFAULT_CONFIG_FILE)
