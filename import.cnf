@@ -1,5 +1,5 @@
 [SCRIPT]
-cmd = /opt/local/bin/mysqlimport
+cmd = mysqlimport
 db_table = data_import
 db_dbname = py_mysql
 data_dir = data

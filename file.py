@@ -24,7 +24,7 @@ class File():
     def finish(self):
         finished = pathlib.PurePath(
             os.getcwd(), self._finished_dir, self._filename)
-        os.open(finished, os.O_CREATi | os.O_TRUNC)
+        os.open(finished, os.O_CREAT | os.O_TRUNC)
 
     def process(self, command):
         returncode = command.run(self)
