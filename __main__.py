@@ -1,15 +1,29 @@
 import argparse
 from .run import App
 
+def run(args):
+    App.run(args.config)
 
-arg_parser = argparse.ArgumentParser(description='A MySQL csv import tool')
-arg_parser.add_argument('-c', '--config',
+def prepare(args):
+    App.prepare()
+
+arg_parser = argparse.ArgumentParser(
+    description='A MySQL csv import tool')
+
+sub_parsers = arg_parser.add_subparsers(help='sub-command help')
+
+run_parser = sub_parsers.add_parser('run', help='run help')
+run_parser.set_defaults(func=run)                        
+run_parser.add_argument('-c', '--config',
                         default=App.DEFAULT_CONFIG_FILE,
                         help='Configuration file')
 
-arg = arg_parser.parse_args()
-arg = vars(arg)
+prepare_parser = sub_parsers.add_parser('prepare', help='prepare help')
+prepare_parser.set_defaults(func=prepare)
 
-cnf_file = arg['config']
+args = arg_parser.parse_args()
 
-App.run(cnf_file)
+if 'func' in args:
+    args.func(args)
+else:
+    arg_parser.parse_args(['--help'])
