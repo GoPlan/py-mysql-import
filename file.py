@@ -26,10 +26,10 @@ class File():
             os.getcwd(), self._finished_dir, self._filename)
         os.open(finished, os.O_CREAT | os.O_TRUNC)
 
-    def process(self, command):
-        returncode = command.run(self)
+    def process(self, visitor, ctx_obj=None):
+        return_code = visitor.run(self, ctx_obj)
         if __debug__:
-            if not returncode == 0:
+            if not return_code == 0:
                 raise AssertionError
         self.finish()
 

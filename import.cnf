@@ -1,5 +1,8 @@
 [SCRIPT]
-cmd = mysqlimport
+host = localhost
+port = 3306
+user = py_mysql
+# password = py_mysql
 db_table = data_import
 db_dbname = py_mysql
 data_dir = data
@@ -7,7 +10,18 @@ cache_dir = cached
 finished_dir = finished
 
 [MYSQLIMPORT]
-host = localhost
-port = 3306
-user = py_mysql
+cmd = mysqlimport
 columns = id, item_code, item_cost, qty, total
+
+[LOAD_DATA_INFILE]
+priority = CONCURRENT
+replacement = REPLACE
+# charset = utf8
+fields_terminated_by = '\t'
+fields_enclosed_by = ''
+fields_escaped_by = '\\'
+lines_terminated_by = '\n'
+lines_starting_by = ''
+ignore_lines = 1
+columns = 
+# set = 

@@ -1,1 +1,2 @@
 # Dependency Requirement
+mysql-connector-python

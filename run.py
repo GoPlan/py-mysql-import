@@ -1,11 +1,11 @@
-from .command import MySqlImportCommand
-from .file import FileBench
-
-import configparser
 import os
+import shutil
+import configparser
 import inspect
 import pathlib
-import shutil
+
+from .mysqlimport import LoadDataInFile
+from .file import FileBench
 
 
 class App():
@@ -16,6 +16,9 @@ class App():
     DEFAULT_FINISHED_DIR = "finished"
 
     SCRIPT_CMD = "cmd"
+    SCRIPT_HOST = "host"
+    SCRIPT_USER = "user"
+    SCRIPT_PASSWORD = "password"
     SCRIPT_DB_TABLE = "db_table"
     SCRIPT_DB_DBNAME = "db_dbname"
     SCRIPT_DATA_DIR = 'data_dir'
@@ -24,6 +27,7 @@ class App():
 
     CNF_SCRIPT = "SCRIPT"
     CNF_MYSQLIMPORT = "MYSQLIMPORT"
+    CNF_LOAD_DATA_INFILE = "LOAD_DATA_INFILE"
 
     @staticmethod
     def run(cnf_file=DEFAULT_CONFIG_FILE):
@@ -32,14 +36,14 @@ class App():
         cnf_parser.read(cnf_file)
 
         cnf_script = cnf_parser[App.CNF_SCRIPT]
-        cnf_mysqlimport = cnf_parser[App.CNF_MYSQLIMPORT]
+        cnf_load_data_infile = cnf_parser[App.CNF_LOAD_DATA_INFILE]
 
-        command = MySqlImportCommand(
-            cnf_script[App.SCRIPT_CMD],
+        visitor = LoadDataInFile(
             cnf_script[App.SCRIPT_CACHE_DIR],
             cnf_script[App.SCRIPT_DB_DBNAME],
             cnf_script[App.SCRIPT_DB_TABLE],
-            cnf_mysqlimport)
+            cnf_load_data_infile
+        )
 
         filebench = FileBench(
             cnf_script[App.SCRIPT_DATA_DIR],
@@ -47,8 +51,14 @@ class App():
 
         iterator = iter(filebench.get_unprocessed_files())
 
-        for file in iterator:
-            file.process(command)
+        with LoadDataInFile.context(
+            host=cnf_script[App.SCRIPT_HOST],
+            database=cnf_script[App.SCRIPT_DB_DBNAME],
+            user=cnf_script[App.SCRIPT_USER],
+            password=cnf_script[App.SCRIPT_PASSWORD],
+        ) as ctx_obj:
+            for file in iterator:
+                file.process(visitor, ctx_obj)
 
     @staticmethod
     def prepare():
@@ -59,7 +69,6 @@ class App():
         module = inspect.getfile(App)
         module_path = os.path.dirname(module)
 
-        import_cnf = pathlib.PurePath(module_path,
-                                      App.DEFAULT_CONFIG_FILE)
+        import_cnf = pathlib.PurePath(module_path, App.DEFAULT_CONFIG_FILE)
 
         shutil.copy(import_cnf, App.DEFAULT_CONFIG_FILE)
