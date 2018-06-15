@@ -28,9 +28,8 @@ class File():
 
     def process(self, visitor, ctx_obj=None):
         return_code = visitor.run(self, ctx_obj)
-        if __debug__:
-            if not return_code == 0:
-                raise AssertionError
+        if __debug__ and not return_code:
+            raise AssertionError
         self.finish()
 
 

@@ -1,4 +1,5 @@
 .vscode/
 .ropeproject/
+.pyenv/
 __pycache__/
 **.swp

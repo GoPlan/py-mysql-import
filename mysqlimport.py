@@ -45,24 +45,26 @@ class LoadDataInFile():
 
     def _generate(self, filepath):
         prepared_stmt = """
-            LOAD DATA LOCAL {PRIORITY} INFILE {FILE}
+            LOAD DATA {PRIORITY} LOCAL INFILE \"{FILE}\"
             {REPLACEMENT}
+            INTO TABLE {TABLE}
             CHARACTER SET {CHARSET}
-            COLUMNS 
+            FIELDS
                 TERMINATED BY {COLUMNS_TERMINATED_BY}
                 ENCLOSED BY {COLUMNS_ENCLOSED_BY}
                 ESCAPED BY {COLUMNS_ESCAPED_BY}
             LINES
                 STARTING BY {LINES_STARTING_BY}
                 TERMINATED BY {LINES_TERMINATED_BY}
-            IGNORE {IGNORE_LINES} LINES
+            IGNORE {IGNORE_LINES} ROWS
             ({COLUMNS})
-            {SET}
+            SET {SET}
         """
 
         stmt = prepared_stmt.format(
             FILE=filepath,
             PRIORITY=self._config[LoadDataInFile.CNF_PRIORITY],
+            TABLE = self._table,
             REPLACEMENT=self._config[LoadDataInFile.CNF_REPLACEMENT],
             CHARSET=self._config[LoadDataInFile.CNF_CHARSET],
             COLUMNS_TERMINATED_BY=self._config[LoadDataInFile.CNF_FIELDS_TERMINATED_BY],

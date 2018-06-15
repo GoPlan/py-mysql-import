@@ -56,6 +56,8 @@ class App():
             database=cnf_script[App.SCRIPT_DB_DBNAME],
             user=cnf_script[App.SCRIPT_USER],
             password=cnf_script[App.SCRIPT_PASSWORD],
+            autocommit=True,
+            allow_local_infile=True
         ) as ctx_obj:
             for file in iterator:
                 file.process(visitor, ctx_obj)
