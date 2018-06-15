@@ -64,7 +64,7 @@ class LoadDataInFile():
         stmt = prepared_stmt.format(
             FILE=filepath,
             PRIORITY=self._config[LoadDataInFile.CNF_PRIORITY],
-            TABLE = self._table,
+            TABLE=self._table,
             REPLACEMENT=self._config[LoadDataInFile.CNF_REPLACEMENT],
             CHARSET=self._config[LoadDataInFile.CNF_CHARSET],
             COLUMNS_TERMINATED_BY=self._config[LoadDataInFile.CNF_FIELDS_TERMINATED_BY],

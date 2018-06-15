@@ -28,9 +28,16 @@ class File():
 
     def process(self, visitor, ctx_obj=None):
         return_code = visitor.run(self, ctx_obj)
+
         if __debug__ and not return_code:
             raise AssertionError
+
         self.finish()
+
+        print("{filename} finished - {return_code}".format(
+            filename=self._filename,
+            return_code=return_code
+        ))
 
 
 class FileIterator():
