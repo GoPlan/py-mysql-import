@@ -24,4 +24,4 @@ lines_terminated_by = '\n'
 lines_starting_by = ''
 ignore_lines = 0
 columns = id, item_code, item_cost, qty, total, @created_ts, @modified_ts
-set = created_ts = str_to_date(@created_ts, '%%d/%%m/%%Y'), modified_ts = str_to_date(@modified_ts, '%%d/%%m/%%Y')
+set = created_ts = str_to_date(@created_ts, '%%Y-%%m-%%d %%k:%%i:%%s'), modified_ts = str_to_date(@modified_ts, '%%Y-%%m-%%d %%k:%%i:%%s')
